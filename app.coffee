@@ -1,6 +1,6 @@
 rows = []
 emptyRow = -> for i in [0..31]
-  color: 'red'
+  color: 'black'
   value: 0
 
 toDecimal = (n) ->

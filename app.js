@@ -9,7 +9,7 @@
     _results = [];
     for (i = _i = 0; _i <= 31; i = ++_i) {
       _results.push({
-        color: 'red',
+        color: 'black',
         value: 0
       });
     }
