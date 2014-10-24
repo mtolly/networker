@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Network Builder</title>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.1.min.js"></script>
   <script type="text/javascript" src="app.js"></script>
   <style type="text/css">
     td {
@@ -11,13 +11,21 @@
     }
     button {
       font-size: 15px;
+      background-color: #A00;
+      color: white;
+    }
+    td {
+      padding: 0;
+      border-width: 0;
     }
   </style>
 </head>
 <body>
 
 <table id="bit-table"></table>
-<button onclick="addRow();">Add Row</button>
+<p>
+  <button onclick="addRow();">Add Row</button>
+</p>
 
 </body>
 </html>

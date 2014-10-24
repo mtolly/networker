@@ -51,9 +51,10 @@
     _ref = [8, 16, 24];
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       i = _ref[_i];
-      htmlButtons[i - 1] += '<td>|</td>';
+      htmlButtons[i - 1] += '<td>&mdash;</td>';
     }
     htmlContent = htmlButtons.join('');
+    htmlContent += "<td>&nbsp;</td>";
     htmlContent += "<td id=\"r" + n + "dec\">" + (toDecimal(n)) + "</td>";
     htmlRow = '<tr>' + htmlContent + '</tr>';
     return $('#bit-table').append(htmlRow);

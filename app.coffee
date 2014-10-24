@@ -22,8 +22,9 @@ addRow = ->
   htmlButtons = for bit, i in newRow
     "<td><button id=\"r#{n}b#{i}\" onclick=\"toggleBit(#{n}, #{i});\">#{bit}</button></td>"
   for i in [8, 16, 24]
-    htmlButtons[i - 1] += '<td>|</td>'
+    htmlButtons[i - 1] += '<td>&mdash;</td>'
   htmlContent = htmlButtons.join ''
+  htmlContent += "<td>&nbsp;</td>"
   htmlContent += "<td id=\"r#{n}dec\">#{toDecimal(n)}</td>"
   htmlRow = '<tr>' + htmlContent + '</tr>'
   $('#bit-table').append htmlRow
