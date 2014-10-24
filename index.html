@@ -11,21 +11,44 @@
     }
     button {
       font-size: 15px;
-      background-color: #A00;
-      color: white;
     }
     td {
       padding: 0;
       border-width: 0;
     }
+    .red {
+      background-color: #A00;
+      color: white;
+    }
+    .blue {
+      background-color: #00A;
+      color: white;
+    }
+    .black {
+      background-color: #222;
+      color: white;
+    }
+    .white {
+      background-color: #eee;
+      color: black;
+    }
   </style>
 </head>
 <body>
 
-<table id="bit-table"></table>
 <p>
   <button onclick="addRow();">Add Row</button>
+  <button onclick="removeRow();">Remove Row</button>
 </p>
+<p>
+  Select tool:
+  <button onclick="setTool('flip');">Flip Bits</button>
+  <button onclick="setTool('red');" class="red">Red</button>
+  <button onclick="setTool('blue');" class="blue">Blue</button>
+  <button onclick="setTool('black');" class="black">Black</button>
+  <button onclick="setTool('white');" class="white">White</button>
+</p>
+<table id="bit-table"></table>
 
 </body>
 </html>
