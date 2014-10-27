@@ -119,12 +119,12 @@
   };
 
   save = function() {
-    return createCookie('networker', JSON.stringify(rows));
+    return localStorage.setItem('networker', JSON.stringify(rows));
   };
 
   load = function() {
     var res, row, _i, _len, _ref;
-    res = readCookie('networker');
+    res = localStorage.getItem('networker');
     if (res != null) {
       _ref = JSON.parse(res);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {

@@ -62,10 +62,10 @@ clickBit = (n, i) ->
   save()
 
 save = ->
-  createCookie 'networker', JSON.stringify(rows)
+  localStorage.setItem 'networker', JSON.stringify(rows)
 
 load = ->
-  res = readCookie 'networker'
+  res = localStorage.getItem 'networker'
   if res?
     attachRow row for row in JSON.parse res
     true
