@@ -1,15 +1,25 @@
 rows = []
 
-emptyRow = -> for i in [0..31]
-  color: 'black'
-  value: 0
+emptyRow = ->
+  bits: for i in [0..31]
+    color: 'black'
+    value: 0
+  label: ''
+
+cloneRow = (row) ->
+  bits:
+    $.extend({}, bit) for bit in row.bits
+  label: ''
+
+getBit = (n, i) ->
+  rows[n].bits[i]
 
 toDecimal = (n) ->
   octets = for i in [0, 8, 16, 24]
     sum = 0
     value = 1
     for j in [i + 7 .. i]
-      sum += rows[n][j].value * value
+      sum += getBit(n, j).value * value
       value *= 2
     sum
   octets.join '.'
@@ -18,22 +28,22 @@ attachRow = (row) ->
   n = rows.length
   rows.push row
   tds = []
-  for bit, i in row
+  tds.push "<td><input id=\"r#{n}label\" type=\"text\" value=\"#{row.label}\" size=\"5\" /></td>"
+  tds.push "<td>&nbsp;</td>"
+  for bit, i in row.bits
     if i in [8, 16, 24]
-      tds.push '<td>&mdash;</td>'
+      tds.push '<td>&ndash;</td>'
     tds.push "<td><button id=\"r#{n}b#{i}\" onclick=\"clickBit(#{n}, #{i});\" class=\"#{bit.color}\">#{bit.value}</button></td>"
   tds.push "<td>&nbsp;</td>"
   tds.push "<td id=\"r#{n}dec\">#{toDecimal(n)}</td>"
   tr = '<tr>' + tds.join('') + '</tr>'
   $('#bit-table').append tr
+  $("\#r#{n}label").change ->
+    editedText(n)
 
 addRow = ->
-  newRow =
-    if rows.length is 0
-      emptyRow()
-    else
-      jQuery.extend({}, x) for x in rows[rows.length - 1]
-  attachRow newRow
+  lastRow = rows[rows.length - 1] ? emptyRow()
+  attachRow cloneRow(lastRow)
   save()
 
 removeRow = ->
@@ -42,12 +52,16 @@ removeRow = ->
   $('#bit-table tr').last().remove()
   save()
 
+editedText = (n) ->
+  rows[n].label = $("\#r#{n}label").val()
+  save()
+
 updateBit = (n, i) ->
   button = $("\#r#{n}b#{i}")
-  button.html rows[n][i].value
+  button.html getBit(n, i).value
   $("\#r#{n}dec").html toDecimal(n)
   button.removeClass()
-  button.addClass rows[n][i].color
+  button.addClass getBit(n, i).color
 
 currentTool = 'flip'
 setTool = (tool) -> currentTool = tool
@@ -55,9 +69,9 @@ setTool = (tool) -> currentTool = tool
 clickBit = (n, i) ->
   switch currentTool
     when 'flip'
-      rows[n][i].value ^= 1
+      getBit(n, i).value ^= 1
     else
-      rows[n][i].color = currentTool
+      getBit(n, i).color = currentTool
   updateBit n, i
   save()
 
