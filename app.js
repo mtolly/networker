@@ -38,28 +38,21 @@
   };
 
   attachRow = function(row) {
-    var bit, htmlButtons, htmlContent, htmlRow, i, n, _i, _len, _ref;
+    var bit, i, n, tds, tr, _i, _len;
     n = rows.length;
     rows.push(row);
-    htmlButtons = (function() {
-      var _i, _len, _results;
-      _results = [];
-      for (i = _i = 0, _len = row.length; _i < _len; i = ++_i) {
-        bit = row[i];
-        _results.push("<td><button id=\"r" + n + "b" + i + "\" onclick=\"clickBit(" + n + ", " + i + ");\" class=\"" + bit.color + "\">" + bit.value + "</button></td>");
+    tds = [];
+    for (i = _i = 0, _len = row.length; _i < _len; i = ++_i) {
+      bit = row[i];
+      if (i === 8 || i === 16 || i === 24) {
+        tds.push('<td>&mdash;</td>');
       }
-      return _results;
-    })();
-    _ref = [8, 16, 24];
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      i = _ref[_i];
-      htmlButtons[i - 1] += '<td>&mdash;</td>';
+      tds.push("<td><button id=\"r" + n + "b" + i + "\" onclick=\"clickBit(" + n + ", " + i + ");\" class=\"" + bit.color + "\">" + bit.value + "</button></td>");
     }
-    htmlContent = htmlButtons.join('');
-    htmlContent += "<td>&nbsp;</td>";
-    htmlContent += "<td id=\"r" + n + "dec\">" + (toDecimal(n)) + "</td>";
-    htmlRow = '<tr>' + htmlContent + '</tr>';
-    return $('#bit-table').append(htmlRow);
+    tds.push("<td>&nbsp;</td>");
+    tds.push("<td id=\"r" + n + "dec\">" + (toDecimal(n)) + "</td>");
+    tr = '<tr>' + tds.join('') + '</tr>';
+    return $('#bit-table').append(tr);
   };
 
   addRow = function() {

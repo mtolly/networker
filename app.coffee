@@ -17,15 +17,15 @@ toDecimal = (n) ->
 attachRow = (row) ->
   n = rows.length
   rows.push row
-  htmlButtons = for bit, i in row
-    "<td><button id=\"r#{n}b#{i}\" onclick=\"clickBit(#{n}, #{i});\" class=\"#{bit.color}\">#{bit.value}</button></td>"
-  for i in [8, 16, 24]
-    htmlButtons[i - 1] += '<td>&mdash;</td>'
-  htmlContent = htmlButtons.join ''
-  htmlContent += "<td>&nbsp;</td>"
-  htmlContent += "<td id=\"r#{n}dec\">#{toDecimal(n)}</td>"
-  htmlRow = '<tr>' + htmlContent + '</tr>'
-  $('#bit-table').append htmlRow
+  tds = []
+  for bit, i in row
+    if i in [8, 16, 24]
+      tds.push '<td>&mdash;</td>'
+    tds.push "<td><button id=\"r#{n}b#{i}\" onclick=\"clickBit(#{n}, #{i});\" class=\"#{bit.color}\">#{bit.value}</button></td>"
+  tds.push "<td>&nbsp;</td>"
+  tds.push "<td id=\"r#{n}dec\">#{toDecimal(n)}</td>"
+  tr = '<tr>' + tds.join('') + '</tr>'
+  $('#bit-table').append tr
 
 addRow = ->
   newRow =
