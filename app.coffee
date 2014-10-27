@@ -1,4 +1,5 @@
 rows = []
+
 emptyRow = -> for i in [0..31]
   color: 'black'
   value: 0
@@ -13,15 +14,10 @@ toDecimal = (n) ->
     sum
   octets.join '.'
 
-addRow = ->
+attachRow = (row) ->
   n = rows.length
-  newRow =
-    if rows.length is 0
-      emptyRow()
-    else
-      jQuery.extend({}, x) for x in rows[rows.length - 1]
-  rows.push newRow
-  htmlButtons = for bit, i in newRow
+  rows.push row
+  htmlButtons = for bit, i in row
     "<td><button id=\"r#{n}b#{i}\" onclick=\"clickBit(#{n}, #{i});\" class=\"#{bit.color}\">#{bit.value}</button></td>"
   for i in [8, 16, 24]
     htmlButtons[i - 1] += '<td>&mdash;</td>'
@@ -31,10 +27,20 @@ addRow = ->
   htmlRow = '<tr>' + htmlContent + '</tr>'
   $('#bit-table').append htmlRow
 
+addRow = ->
+  newRow =
+    if rows.length is 0
+      emptyRow()
+    else
+      jQuery.extend({}, x) for x in rows[rows.length - 1]
+  attachRow newRow
+  save()
+
 removeRow = ->
   return if rows.length <= 0
   rows.pop()
   $('#bit-table tr').last().remove()
+  save()
 
 updateBit = (n, i) ->
   button = $("\#r#{n}b#{i}")
@@ -53,9 +59,21 @@ clickBit = (n, i) ->
     else
       rows[n][i].color = currentTool
   updateBit n, i
+  save()
+
+save = ->
+  createCookie 'networker', JSON.stringify(rows)
+
+load = ->
+  res = readCookie 'networker'
+  if res?
+    attachRow row for row in JSON.parse res
+    true
+  else
+    false
 
 $(document).ready ->
-  addRow()
+  load() or addRow()
 
 window.addRow = addRow
 window.removeRow = removeRow
